@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\common.props" />
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<RootNamespace />
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Further.Abp.LineNotify.Abstractions\Further.Abp.LineNotify.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="HttpTracer" Version="2.1.1" />
+		<PackageReference Include="RestSharp" Version="110.2.0" />
+	</ItemGroup>
+
+</Project>
