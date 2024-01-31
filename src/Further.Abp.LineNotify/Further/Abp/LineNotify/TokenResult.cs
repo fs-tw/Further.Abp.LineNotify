@@ -1,6 +1,6 @@
 ﻿namespace Further.Abp.LineNotify
 {
-    public class GetTokenResult
+    public class TokenResult
     {
         public string access_token { get; set; }
 

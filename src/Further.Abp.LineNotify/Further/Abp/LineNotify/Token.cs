@@ -1,6 +1,6 @@
 ﻿namespace Further.Abp.LineNotify
 {
-    public class GetToken
+    public class Token
     {
         public string grant_type { get; set; }
         public string code { get; set; }

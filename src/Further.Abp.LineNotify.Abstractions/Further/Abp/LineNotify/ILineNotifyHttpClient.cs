@@ -6,6 +6,6 @@ namespace Further.Abp.LineNotify
     {
         Task<string> AuthorizeUrlAsync(string state);
         Task NotifyAsync(string accessToken, string message);
-        Task<GetTokenResult> TokenAsync(string code);
+        Task<string> TokenAsync(string code);
     }
 }
