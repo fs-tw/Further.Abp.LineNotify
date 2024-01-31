@@ -20,22 +20,25 @@ namespace Further.Abp.LineNotify
         private readonly LineNotifyOptions options;
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IJsonSerializer jsonSerializer;
+        private readonly ICurrentClient currentClient;
 
         public LineNotifyHttpClient(
             IOptions<LineNotifyOptions> options,
             IHttpClientFactory httpClientFactory,
-            IJsonSerializer jsonSerializer)
+            IJsonSerializer jsonSerializer,
+            ICurrentClient currentClient)
 
         {
             this.options = options.Value;
             this.httpClientFactory = httpClientFactory;
             this.jsonSerializer = jsonSerializer;
+            this.currentClient = currentClient;
         }
 
         public async Task<string> AuthorizeUrlAsync(string state)
         {
 
-            var defaultConfigurator = options.Configurators["Default"];
+            var defaultConfigurator = options.Configurators[currentClient.ClientKey];
             var url = $"{options.NotifyBotUrl}/authorize?response_type=code&client_id={defaultConfigurator.ClientId}&redirect_uri={defaultConfigurator.RedirectUrl}&scope=notify&state={state}";
             return url;
         }
