@@ -11,6 +11,6 @@ namespace Further.Abp.LineNotify
         //public string ProviderKey { get; set; }
         public string State { get; set; }
         public string Code { get; set; }
-
+        public string Token { get; set; }
     }
 }
