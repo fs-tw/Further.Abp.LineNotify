@@ -13,6 +13,10 @@ namespace Further.Abp.LineNotify
 {
     public class LineNotifyHttpClient : Volo.Abp.DependencyInjection.ITransientDependency, ILineNotifyHttpClient
     {
+        //想擴充logger功能可參考
+        //https://learn.microsoft.com/en-us/dotnet/api/system.net.http.delegatinghandler?view=net-8.0
+        //實作DelegatingHandler
+
         private readonly LineNotifyOptions options;
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IJsonSerializer jsonSerializer;
