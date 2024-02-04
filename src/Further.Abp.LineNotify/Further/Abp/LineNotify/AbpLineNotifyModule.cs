@@ -3,12 +3,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Modularity;
 
 namespace Further.Abp.LineNotify;
 
 [DependsOn(
-       typeof(AbpLineNotifyAbstractionsModule)
+    typeof(AbpLineNotifyAbstractionsModule),
+    typeof(AbpAspNetCoreMvcModule)
     )]
 public class AbpLineNotifyModule : AbpModule
 {

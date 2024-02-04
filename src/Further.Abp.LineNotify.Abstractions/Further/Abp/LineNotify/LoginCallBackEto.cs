@@ -6,11 +6,9 @@ namespace Further.Abp.LineNotify
 {
     public class LoginCallBackEto
     {
-        //public string Name { get; set; }
-        //public string ProviderName { get; set; }
-        //public string ProviderKey { get; set; }
-        public string State { get; set; }
-        public string Code { get; set; }
-        public string Token { get; set; }
+        public string ConfiguratorsName { get; set; } = null!;
+        public string State { get; set; } = null!;
+        public string Code { get; set; } = null!;
+        public string Token { get; set; } = null!;
     }
 }

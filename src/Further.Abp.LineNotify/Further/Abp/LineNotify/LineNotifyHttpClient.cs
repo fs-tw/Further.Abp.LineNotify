@@ -20,32 +20,29 @@ namespace Further.Abp.LineNotify
         private readonly LineNotifyOptions options;
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IJsonSerializer jsonSerializer;
-        private readonly ICurrentClient currentClient;
+        
 
         public LineNotifyHttpClient(
             IOptions<LineNotifyOptions> options,
             IHttpClientFactory httpClientFactory,
-            IJsonSerializer jsonSerializer,
-            ICurrentClient currentClient)
-
+            IJsonSerializer jsonSerializer)
         {
             this.options = options.Value;
             this.httpClientFactory = httpClientFactory;
             this.jsonSerializer = jsonSerializer;
-            this.currentClient = currentClient;
         }
 
-        public async Task<string> AuthorizeUrlAsync(string state)
+        public async Task<string> AuthorizeUrlAsync(string state, string configuratorsName = LineNotifyOptions.DefaultConfiguratorName)
         {
 
-            var defaultConfigurator = options.Configurators[currentClient.ClientKey];
-            var url = $"{options.NotifyBotUrl}/authorize?response_type=code&client_id={defaultConfigurator.ClientId}&redirect_uri={defaultConfigurator.RedirectUrl}&scope=notify&state={state}";
+            var configurator = options.Configurators[configuratorsName];
+            var url = $"{options.NotifyBotUrl}/authorize?response_type=code&client_id={configurator.ClientId}&redirect_uri={configurator.RedirectUrl}&scope=notify&state={state}";
             return url;
         }
 
-        public async Task NotifyAsync(string accessToken, string message)
+        public async Task NotifyAsync(string accessToken, string message, string configuratorsName = LineNotifyOptions.DefaultConfiguratorName)
         {
-            var client = httpClientFactory.CreateClient("LineNotify_Default");
+            var client = httpClientFactory.CreateClient(LineNotifyOptions.HttpClientName(configuratorsName));
 
             var request = new HttpRequestMessage(HttpMethod.Post, $"{options.NotifyApiUrl}/notify?message={message}");
 
@@ -60,21 +57,21 @@ namespace Further.Abp.LineNotify
             }
         }
 
-        public async Task<string> TokenAsync(string code)
+        public async Task<string> TokenAsync(string code, string configuratorsName = LineNotifyOptions.DefaultConfiguratorName)
         {
-            var defaultConfigurator = options.Configurators["Default"];
+            var configurator = options.Configurators[configuratorsName];
 
-            var client = httpClientFactory.CreateClient("LineNotify_Default");
+            var client = httpClientFactory.CreateClient(LineNotifyOptions.HttpClientName(configuratorsName));
 
             var request = new HttpRequestMessage(HttpMethod.Post, $"{options.NotifyBotUrl}/token");
 
             var formContent = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("client_id", defaultConfigurator.ClientId),
-                new KeyValuePair<string, string>("client_secret", defaultConfigurator.ClientSecret),
+                new KeyValuePair<string, string>("client_id", configurator.ClientId),
+                new KeyValuePair<string, string>("client_secret", configurator.ClientSecret),
                 new KeyValuePair<string, string>("grant_type", "authorization_code"),
                 new KeyValuePair<string, string>("code", code),
-                new KeyValuePair<string, string>("redirect_uri", defaultConfigurator.RedirectUrl),
+                new KeyValuePair<string, string>("redirect_uri", configurator.RedirectUrl),
             });
 
             request.Content = formContent;
@@ -88,7 +85,7 @@ namespace Further.Abp.LineNotify
                 return jsonSerializer.Deserialize<TokenResult>(jsonString).access_token;
             }
 
-            throw new NotImplementedException();
+            throw new ArgumentException();
         }
     }
 }
