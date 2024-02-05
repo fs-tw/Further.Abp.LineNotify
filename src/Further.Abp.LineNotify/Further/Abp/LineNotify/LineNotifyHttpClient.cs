@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Volo.Abp;
 using Volo.Abp.Json;
 
 namespace Further.Abp.LineNotify
@@ -20,7 +21,7 @@ namespace Further.Abp.LineNotify
         private readonly LineNotifyOptions options;
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IJsonSerializer jsonSerializer;
-        
+
 
         public LineNotifyHttpClient(
             IOptions<LineNotifyOptions> options,
@@ -32,21 +33,30 @@ namespace Further.Abp.LineNotify
             this.jsonSerializer = jsonSerializer;
         }
 
-        public async Task<string> AuthorizeUrlAsync(string state, string configuratorsName = LineNotifyOptions.DefaultConfiguratorName)
+        public async Task<string> AuthorizeAsync(string configuratorsName = LineNotifyOptions.DefaultConfiguratorName)
         {
 
             var configurator = options.Configurators[configuratorsName];
-            var url = $"{options.NotifyBotUrl}/authorize?response_type=code&client_id={configurator.ClientId}&redirect_uri={configurator.RedirectUrl}&scope=notify&state={state}";
+            var url = $"{options.NotifyBotUrl}/authorize?response_type=code&client_id={configurator.ClientId}&redirect_uri={configurator.RedirectUrl}&scope=notify&state={configuratorsName}";
             return url;
         }
 
-        public async Task NotifyAsync(string accessToken, string message, string configuratorsName = LineNotifyOptions.DefaultConfiguratorName)
+        public async Task NotifyAsync(string message, string configuratorsName = LineNotifyOptions.DefaultConfiguratorName)
         {
+            var configurator = options.Configurators[configuratorsName];
+
             var client = httpClientFactory.CreateClient(LineNotifyOptions.HttpClientName(configuratorsName));
 
             var request = new HttpRequestMessage(HttpMethod.Post, $"{options.NotifyApiUrl}/notify?message={message}");
 
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            var token = configurator.GetAccessToken();
+
+            if (token == null)
+            {
+                throw new AbpException($"{configuratorsName} of LineNotifyHttpClient has no token");
+            }
+
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var response = await client.SendAsync(request);
 
