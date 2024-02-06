@@ -18,22 +18,22 @@ namespace Further.Abp.LineNotify
             this.cache = cache;
         }
 
-        public async Task<AccessTokenCacheItem?> GetAccessTokenAsync(string configuratorName, string groupName)
+        public async Task<AccessTokenCacheItem?> GetAccessTokenAsync(string configuratorName, string subject)
         {
 
-            var result = await cache.GetAsync(LineNotifyConsts.AccessTokenCacheName(configuratorName, groupName));
+            var result = await cache.GetAsync(LineNotifyConsts.AccessTokenCacheName(configuratorName, subject));
 
             return result;
         }
 
-        public async Task SetAccessTokenAsync(string configuratorName, string groupName, string value)
+        public async Task SetAccessTokenAsync(string configuratorName, string subject, string value)
         {
-            await cache.SetAsync(LineNotifyConsts.AccessTokenCacheName(configuratorName, groupName), new AccessTokenCacheItem { AccessToken = value });
+            await cache.SetAsync(LineNotifyConsts.AccessTokenCacheName(configuratorName, subject), new AccessTokenCacheItem { AccessToken = value });
         }
 
-        public async Task RemoveAccessTokenAsync(string configuratorName, string groupName, string value)
+        public async Task RemoveAccessTokenAsync(string configuratorName, string subject)
         {
-            await cache.RemoveAsync(LineNotifyConsts.AccessTokenCacheName(configuratorName, groupName));
+            await cache.RemoveAsync(LineNotifyConsts.AccessTokenCacheName(configuratorName, subject));
         }
 
 

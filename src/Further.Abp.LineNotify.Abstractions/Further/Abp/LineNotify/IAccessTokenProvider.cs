@@ -12,11 +12,11 @@ namespace Further.Abp.LineNotify
 
     public interface IAccessTokenProvider
     {
-        Task<AccessTokenCacheItem?> GetAccessTokenAsync(string configuratorName, string groupName);
+        Task<AccessTokenCacheItem?> GetAccessTokenAsync(string configuratorName, string subject);
 
-        Task SetAccessTokenAsync(string configuratorName, string groupName, string value);
+        Task SetAccessTokenAsync(string configuratorName, string subject, string token);
 
-        Task RemoveAccessTokenAsync(string configuratorName, string groupName, string value);
+        Task RemoveAccessTokenAsync(string configuratorName, string subject);
     }
 
 }

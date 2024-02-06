@@ -19,10 +19,10 @@ namespace Further.Abp.LineNotify
                 get => this.GetOrDefault(nameof(ClientSecret))!;
                 set => this[nameof(ClientSecret)] = value;
             }
-            public string ResultUrl
+            public string ReturnUrl
             {
-                get => this.GetOrDefault(nameof(ResultUrl))!;
-                set => this[nameof(ResultUrl)] = value;
+                get => this.GetOrDefault(nameof(ReturnUrl))!;
+                set => this[nameof(ReturnUrl)] = value;
             }
             public string RedirectUrl
             {

@@ -9,8 +9,19 @@ namespace Further.Abp.LineNotify
     public class LineNotifyConsts
     {
         public const string DefaultConfiguratorName = "Default";
-        public const string DefaultGroupName = "Default";
-        public static string HttpClientName(string configuratorName) => $"LineNotify_{configuratorName}";
-        public static string AccessTokenCacheName(string configuratorName, string groupName) => $"LineNotify_{configuratorName}-{groupName}_AccessToken";
+        public const string DefaultSubject = "Default";
+        public static string HttpClientName(string configuratorName) => $"LineNotify.HttpClientName:{configuratorName}";
+        public static string AccessTokenCacheName(string configuratorName, string subject) => $"LineNotify.AccessToken:{configuratorName}:{subject}";
+        public static string EncodeState(string configuratorName, string subject, string returnUrl) => $"{configuratorName};{subject};{returnUrl}";
+
+        public static (string ConfiguratorName, string Subject, string ReturnUrl) DecodeState(string state)
+        {
+            var parts = state.Split(':');
+            if (parts.Length != 3)
+            {
+                throw new ArgumentException("Invalid state");
+            }
+            return (parts[0], parts[1], parts[2]);
+        }
     }
 }

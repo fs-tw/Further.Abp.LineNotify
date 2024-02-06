@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.EventBus.Distributed;
@@ -32,9 +34,13 @@ namespace Further.Abp.LineNotify.Controllers
         }
 
         [HttpGet("authorize-url")]
-        public async Task<string> AuthorizeUrlAsync(string resultUrl, string groupName = LineNotifyConsts.DefaultGroupName, string configuratorName = LineNotifyConsts.DefaultConfiguratorName)
+        public async Task<string> AuthorizeUrlAsync(string returnUrl, string subject = LineNotifyConsts.DefaultSubject, string configuratorName = LineNotifyConsts.DefaultConfiguratorName)
         {
-            var url = await lineNotifyHttpClient.AuthorizeAsync(resultUrl, groupName, configuratorName);
+            var url = await lineNotifyHttpClient.AuthorizeAsync(
+                returnUrl: returnUrl,
+                configuratorName: configuratorName,
+                subject: subject);
+
             return url;
         }
 
@@ -42,41 +48,44 @@ namespace Further.Abp.LineNotify.Controllers
         public async Task<string> TokenAsync(string code, string configuratorName = LineNotifyConsts.DefaultConfiguratorName)
         {
             var token = await lineNotifyHttpClient.TokenAsync(code, configuratorName);
+
             return token;
         }
 
         [HttpGet("notify")]
-        public async Task NotifyAsync(string message, string configuratorName = LineNotifyConsts.DefaultConfiguratorName)
+        public async Task NotifyAsync(string message, string subject = LineNotifyConsts.DefaultSubject, string configuratorName = LineNotifyConsts.DefaultConfiguratorName)
         {
-            await lineNotifyHttpClient.NotifyAsync(message, configuratorName);
+            await lineNotifyHttpClient.NotifyAsync(
+                message: message,
+                configuratorName: configuratorName,
+                subject: subject);
         }
 
-        [HttpGet("callback")]
-        public async Task<RedirectResult> CallbackAsync(string code, string state)
+        [HttpGet("redirect")]
+        public async Task<RedirectResult> RedirectAsync(string code, string state)
         {
-            var configuratorName = state.Split('_')[0];
+            var stateParts = LineNotifyConsts.DecodeState(WebUtility.UrlDecode(state));
 
-            var groupName = state.Split('_')[1];
+            var token = await lineNotifyHttpClient.TokenAsync(code, stateParts.ConfiguratorName);
 
-            var resultUrl = state.Split('_')[2];
+            await accessTokenProvider.SetAccessTokenAsync(
+                configuratorName: stateParts.ConfiguratorName,
+                subject: stateParts.Subject,
+                token: token);
 
-            var token = await lineNotifyHttpClient.TokenAsync(code, configuratorName);
-
-            await accessTokenProvider.SetAccessTokenAsync(configuratorName, groupName, token);
-
-            await distributedEventBus.PublishAsync(new LoginCallBackEto
+            await distributedEventBus.PublishAsync(new LoginReturnEto
             {
                 State = state,
-                ConfiguratorsName = configuratorName,
-                GroupName = groupName,
+                ConfiguratorsName = stateParts.ConfiguratorName,
+                subject = stateParts.Subject,
                 Code = code,
                 Token = token,
-                ResultUrl = resultUrl
+                ResultUrl = stateParts.ReturnUrl
             });
 
-            resultUrl = $"{resultUrl}?groupName={groupName}&configuratorName={configuratorName}";
+            var result = HttpUtility.UrlEncode($"{stateParts.ReturnUrl}?subject={stateParts.Subject}&configuratorName={stateParts.ConfiguratorName}");
 
-            return Redirect(new Uri(resultUrl).ToString());
+            return Redirect(new Uri(result).ToString());
 
         }
     }

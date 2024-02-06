@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml.Linq;
 using Volo.Abp;
 using Volo.Abp.Json;
@@ -37,21 +39,29 @@ namespace Further.Abp.LineNotify
             this.accessTokenProvider = accessTokenProvider;
         }
 
-        public async Task<string> AuthorizeAsync(string resultUrl, string configuratorName = LineNotifyConsts.DefaultConfiguratorName, string groupName = LineNotifyConsts.DefaultGroupName)
+        public Task<string> AuthorizeAsync(string resultUrl, string configuratorName = LineNotifyConsts.DefaultConfiguratorName, string subject = LineNotifyConsts.DefaultSubject)
         {
-
             var configurator = options.Configurators[configuratorName];
-            var url = $"{NotifyBotUrl}/authorize?response_type=code&client_id={configurator.ClientId}&redirect_uri={configurator.RedirectUrl}&scope=notify&state={configuratorName}_{groupName}_{resultUrl ?? configurator.ResultUrl}";
-            return url;
+
+            var queryString = new Dictionary<string, string?>()
+            {
+                { "response_type", "code" } ,
+                { "client_id", configurator.ClientId },
+                { "redirect_uri", configurator.RedirectUrl },
+                { "scope", "notify" },
+                { "state", LineNotifyConsts.EncodeState(configuratorName:configuratorName,subject:subject,returnUrl:resultUrl??configurator.ReturnUrl) },
+            };
+            var newUrl = new Uri(QueryHelpers.AddQueryString(NotifyBotUrl, queryString)).ToString();
+            return Task.FromResult(HttpUtility.UrlEncode(newUrl));
         }
 
-        public async Task NotifyAsync(string message, string configuratorName = LineNotifyConsts.DefaultConfiguratorName, string groupName = LineNotifyConsts.DefaultGroupName)
+        public async Task NotifyAsync(string message, string configuratorName = LineNotifyConsts.DefaultConfiguratorName, string subject = LineNotifyConsts.DefaultSubject)
         {
             var client = httpClientFactory.CreateClient(LineNotifyConsts.HttpClientName(configuratorName));
 
             var request = new HttpRequestMessage(HttpMethod.Post, $"{NotifyApiUrl}/notify?message={message}");
 
-            var token = (await accessTokenProvider.GetAccessTokenAsync(configuratorName, groupName))?.AccessToken;
+            var token = (await accessTokenProvider.GetAccessTokenAsync(configuratorName, subject))?.AccessToken;
 
             if (token == null)
             {
