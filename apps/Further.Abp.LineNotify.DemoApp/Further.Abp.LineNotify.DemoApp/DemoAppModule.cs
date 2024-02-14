@@ -103,6 +103,7 @@ namespace Further.Abp.LineNotify.DemoApp;
     typeof(AbpSettingManagementHttpApiModule),
     typeof(AbpSettingManagementWebModule)
 )]
+[DependsOn(typeof(AbpLineNotifyModule))]
 public class DemoAppModule : AbpModule
 {
     /* Single point to enable/disable multi-tenancy */
