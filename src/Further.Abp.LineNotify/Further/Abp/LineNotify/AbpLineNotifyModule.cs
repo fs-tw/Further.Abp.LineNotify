@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.Modularity;
 
 namespace Further.Abp.LineNotify;
@@ -12,6 +13,7 @@ namespace Further.Abp.LineNotify;
     typeof(AbpLineNotifyAbstractionsModule),
     typeof(AbpAspNetCoreMvcModule)
     )]
+[DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
 public class AbpLineNotifyModule : AbpModule
 {
 

@@ -16,7 +16,7 @@ namespace Further.Abp.LineNotify
 
         public static (string ConfiguratorName, string Subject, string ReturnUrl) DecodeState(string state)
         {
-            var parts = state.Split(':');
+            var parts = state.Split(';');
             if (parts.Length != 3)
             {
                 throw new ArgumentException("Invalid state");

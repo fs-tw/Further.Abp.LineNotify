@@ -51,8 +51,8 @@ namespace Further.Abp.LineNotify
                 { "scope", "notify" },
                 { "state", LineNotifyConsts.EncodeState(configuratorName:configuratorName,subject:subject,returnUrl:resultUrl??configurator.ReturnUrl) },
             };
-            var newUrl = new Uri(QueryHelpers.AddQueryString(NotifyBotUrl, queryString)).ToString();
-            return Task.FromResult(HttpUtility.UrlEncode(newUrl));
+            var newUrl = new Uri(QueryHelpers.AddQueryString(NotifyBotUrl + "/authorize", queryString)).ToString();
+            return Task.FromResult(newUrl);
         }
 
         public async Task NotifyAsync(string message, string configuratorName = LineNotifyConsts.DefaultConfiguratorName, string subject = LineNotifyConsts.DefaultSubject)

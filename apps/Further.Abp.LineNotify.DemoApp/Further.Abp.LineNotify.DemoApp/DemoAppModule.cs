@@ -50,6 +50,11 @@ using Volo.Abp.UI.Navigation;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
+using Microsoft.AspNetCore.DataProtection;
+using StackExchange.Redis;
+using Medallion.Threading;
+using Medallion.Threading.Redis;
+using Volo.Abp.Caching.StackExchangeRedis;
 
 namespace Further.Abp.LineNotify.DemoApp;
 
@@ -104,6 +109,7 @@ namespace Further.Abp.LineNotify.DemoApp;
     typeof(AbpSettingManagementWebModule)
 )]
 [DependsOn(typeof(AbpLineNotifyModule))]
+[DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
 public class DemoAppModule : AbpModule
 {
     /* Single point to enable/disable multi-tenancy */
@@ -163,6 +169,8 @@ public class DemoAppModule : AbpModule
         ConfigureSwagger(context.Services);
         ConfigureNavigationServices();
         ConfigureAutoApiControllers();
+        ConfigureDataProtection(context, configuration, hostingEnvironment);
+        ConfigureDistributedLocking(context, configuration);
         ConfigureVirtualFiles(hostingEnvironment);
         ConfigureLocalization();
         ConfigureEfCore(context);
@@ -320,6 +328,30 @@ public class DemoAppModule : AbpModule
             });
         });
 
+    }
+
+    private void ConfigureDataProtection(
+        ServiceConfigurationContext context,
+        IConfiguration configuration,
+        IWebHostEnvironment hostingEnvironment)
+    {
+        var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("LineNotifyDemo");
+        if (!hostingEnvironment.IsDevelopment())
+        {
+            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+            dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "LineNotifyDemo-Protection-Keys");
+        }
+    }
+
+    private void ConfigureDistributedLocking(
+            ServiceConfigurationContext context,
+            IConfiguration configuration)
+    {
+        context.Services.AddSingleton<IDistributedLockProvider>(sp =>
+        {
+            var connection = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
+            return new RedisDistributedSynchronizationProvider(connection.GetDatabase());
+        });
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

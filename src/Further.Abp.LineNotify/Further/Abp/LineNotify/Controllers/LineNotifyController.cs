@@ -64,7 +64,7 @@ namespace Further.Abp.LineNotify.Controllers
         [HttpGet("redirect")]
         public async Task<RedirectResult> RedirectAsync(string code, string state)
         {
-            var stateParts = LineNotifyConsts.DecodeState(WebUtility.UrlDecode(state));
+            var stateParts = LineNotifyConsts.DecodeState(state);
 
             var token = await lineNotifyHttpClient.TokenAsync(code, stateParts.ConfiguratorName);
 
@@ -83,7 +83,7 @@ namespace Further.Abp.LineNotify.Controllers
                 ResultUrl = stateParts.ReturnUrl
             });
 
-            var result = HttpUtility.UrlEncode($"{stateParts.ReturnUrl}?subject={stateParts.Subject}&configuratorName={stateParts.ConfiguratorName}");
+            var result = $"{stateParts.ReturnUrl}?subject={stateParts.Subject}&configuratorName={stateParts.ConfiguratorName}";
 
             return Redirect(new Uri(result).ToString());
 
