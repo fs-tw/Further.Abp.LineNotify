@@ -10,8 +10,8 @@ namespace Further.Abp.LineNotify
     {
         public const string DefaultConfiguratorName = "Default";
         public const string DefaultSubject = "Default";
-        public static string HttpClientName(string configuratorName) => $"LineNotify.HttpClientName:{configuratorName}";
-        public static string AccessTokenCacheName(string configuratorName, string subject) => $"LineNotify.AccessToken:{configuratorName}:{subject}";
+        public const string HttpClientName = "AbpLineNotify";
+        public static string AccessTokenCacheName(string configuratorName, string subject) => $"AbpLineNotify.AccessToken:{configuratorName}:{subject}";
         public static string EncodeState(string configuratorName, string subject, string returnUrl) => $"{configuratorName};{subject};{returnUrl}";
 
         public static (string ConfiguratorName, string Subject, string ReturnUrl) DecodeState(string state)

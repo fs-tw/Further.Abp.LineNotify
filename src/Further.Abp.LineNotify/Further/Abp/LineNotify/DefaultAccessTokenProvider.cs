@@ -13,17 +13,15 @@ namespace Further.Abp.LineNotify
     public class DefaultAccessTokenProvider : IAccessTokenProvider, Volo.Abp.DependencyInjection.ITransientDependency
     {
         private readonly IDistributedCache<AccessTokenCacheItem> cache;
-        private readonly IDistributedCache distributedCache;
-        private readonly IDistributedCacheKeyNormalizer keyNormalizer;
+        private readonly DistributedCacheKeyPersistProvider distributedCacheKeyPersist;
 
         public DefaultAccessTokenProvider(
             IDistributedCache<AccessTokenCacheItem> cache,
-            IDistributedCache distributedCache,
-            IDistributedCacheKeyNormalizer keyNormalizer)
+            DistributedCacheKeyPersistProvider distributedCacheKeyPersist
+            )
         {
             this.cache = cache;
-            this.distributedCache = distributedCache;
-            this.keyNormalizer = keyNormalizer;
+            this.distributedCacheKeyPersist = distributedCacheKeyPersist;
         }
 
         public async Task<AccessTokenCacheItem?> GetAccessTokenAsync(string configuratorName, string subject)
@@ -37,11 +35,10 @@ namespace Further.Abp.LineNotify
         public async Task SetAccessTokenAsync(string configuratorName, string subject, string value)
         {
             var key = LineNotifyConsts.AccessTokenCacheName(configuratorName, subject);
-            var fullKey = keyNormalizer.GetFullKey<AccessTokenCacheItem>(key);
 
             await cache.SetAsync(key, new AccessTokenCacheItem { AccessToken = value });
 
-            await distributedCache.KeyPersistAsync(fullKey);
+            await distributedCacheKeyPersist.KeyPersistAsync<AccessTokenCacheItem>(key);
         }
 
         public async Task RemoveAccessTokenAsync(string configuratorName, string subject)

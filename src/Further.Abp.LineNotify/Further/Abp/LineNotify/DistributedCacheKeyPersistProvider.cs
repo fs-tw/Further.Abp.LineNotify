@@ -11,30 +11,35 @@ using Volo.Abp.MultiTenancy;
 
 namespace Further.Abp.LineNotify
 {
-    public static class DistributedCacheExtensions
+    public class DistributedCacheKeyPersistProvider : Volo.Abp.DependencyInjection.ISingletonDependency
     {
-        public static async Task KeyPersistAsync(this IDistributedCache cache, string key)
+        private readonly AbpRedisCache cache;
+        private readonly IDistributedCacheKeyNormalizer keyNormalizer;
+
+        public DistributedCacheKeyPersistProvider(AbpRedisCache cache, IDistributedCacheKeyNormalizer keyNormalizer)
+        {
+            this.cache = cache;
+            this.keyNormalizer = keyNormalizer;
+        }
+        public async Task KeyPersistAsync<TCacheItem>(string key)
         {
             var redisDatabaseProperty = typeof(AbpRedisCache).GetProperty("RedisDatabase", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            var redisDatabase = (StackExchange.Redis.IDatabase)redisDatabaseProperty.GetValue(cache);
+            var redisDatabase = (redisDatabaseProperty!.GetValue(cache) as StackExchange.Redis.IDatabase);
 
-            await redisDatabase.KeyPersistAsync(key);
-        }
-
-        public static string GetFullKey<TCacheItem>(this IDistributedCacheKeyNormalizer keyNormalizer, string key)
-        {
             var cacheName = CacheNameAttribute.GetCacheName(typeof(TCacheItem));
 
             var ignoreMultiTenancy = typeof(TCacheItem).IsDefined(typeof(IgnoreMultiTenancyAttribute), true);
 
-            return keyNormalizer.NormalizeKey(
+            var normalizeKey = keyNormalizer.NormalizeKey(
                 new DistributedCacheKeyNormalizeArgs(
                     key.ToString()!,
                     cacheName,
                     ignoreMultiTenancy
                     )
                 );
+
+            await redisDatabase!.KeyPersistAsync(normalizeKey);
         }
     }
 }

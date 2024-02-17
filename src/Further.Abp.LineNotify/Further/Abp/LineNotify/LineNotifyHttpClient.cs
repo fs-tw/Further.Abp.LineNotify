@@ -57,7 +57,7 @@ namespace Further.Abp.LineNotify
 
         public async Task NotifyAsync(string message, string configuratorName = LineNotifyConsts.DefaultConfiguratorName, string subject = LineNotifyConsts.DefaultSubject)
         {
-            var client = httpClientFactory.CreateClient(LineNotifyConsts.HttpClientName(configuratorName));
+            var client = httpClientFactory.CreateClient(LineNotifyConsts.HttpClientName);
 
             var request = new HttpRequestMessage(HttpMethod.Post, $"{NotifyApiUrl}/notify?message={message}");
 
@@ -83,7 +83,7 @@ namespace Further.Abp.LineNotify
         {
             var configurator = options.Configurators[configuratorName];
 
-            var client = httpClientFactory.CreateClient(LineNotifyConsts.HttpClientName(configuratorName));
+            var client = httpClientFactory.CreateClient(LineNotifyConsts.HttpClientName);
 
             var request = new HttpRequestMessage(HttpMethod.Post, $"{NotifyBotUrl}/token");
 
