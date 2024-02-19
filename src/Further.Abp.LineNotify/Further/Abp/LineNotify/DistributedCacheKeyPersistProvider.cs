@@ -13,10 +13,10 @@ namespace Further.Abp.LineNotify
 {
     public class DistributedCacheKeyPersistProvider : Volo.Abp.DependencyInjection.ISingletonDependency
     {
-        private readonly AbpRedisCache cache;
+        private readonly IDistributedCache cache;
         private readonly IDistributedCacheKeyNormalizer keyNormalizer;
 
-        public DistributedCacheKeyPersistProvider(AbpRedisCache cache, IDistributedCacheKeyNormalizer keyNormalizer)
+        public DistributedCacheKeyPersistProvider(IDistributedCache cache, IDistributedCacheKeyNormalizer keyNormalizer)
         {
             this.cache = cache;
             this.keyNormalizer = keyNormalizer;
