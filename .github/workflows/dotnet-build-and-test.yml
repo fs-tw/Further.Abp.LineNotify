@@ -13,7 +13,7 @@ jobs:
         token: r79j54p2crlTmuQChPt2grEhNYnI5351Hpk1J9idGZJ
         message: |
           
-          fs-tw/Further : dotnet-build-and-test
+          ${{ github.repository}} : dotnet-build-and-test
           Actor: ${{ github.actor }}
           Start
 
@@ -45,17 +45,17 @@ jobs:
     - id: restore
       shell: pwsh
       run: |
-        dotnet restore
+        dotnet restore ./framework/Further.Abp.LineNotify/*.sln
       continue-on-error: false   
     - id: build
       shell: pwsh
       run: |
-        dotnet build
+        dotnet build ./framework/Further.Abp.LineNotify/*.sln
       continue-on-error: false      
     - id: test
       shell: pwsh
       run: |
-        dotnet test
+        dotnet test ./framework/Further.Abp.LineNotify/*.sln
       continue-on-error: false   
 
   notify-end:
@@ -68,7 +68,7 @@ jobs:
         token: r79j54p2crlTmuQChPt2grEhNYnI5351Hpk1J9idGZJ
         message: |
           
-          fs-tw/Further : dotnet-build-and-test
+          ${{ github.repository}} : dotnet-build-and-test
           Actor: ${{ github.actor }}
           Success
           

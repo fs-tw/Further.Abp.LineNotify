@@ -19,7 +19,7 @@ jobs:
       - id: commonProps
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./common.props
+          path: ./framework/Further.Abp.LineNotify/common.props
 
       - id: getVersion
         uses: AsasInnab/regex-action@v1
@@ -34,16 +34,16 @@ jobs:
           dotnet nuget add source https://nuget.pkg.github.com/fs-tw/index.json -u fs-tw -p ${{ secrets.PERSONAL_TOKEN }}  --store-password-in-clear-text --name "github"
         continue-on-error: true
 
-      - run: dotnet restore
+      - run: dotnet restore ./framework/Further.Abp.LineNotify/*.sln
         continue-on-error: false
 
-      - run: dotnet build -c Release
+      - run: dotnet build ./framework/Further.Abp.LineNotify/*.sln -c Release
         continue-on-error: false
 
-      - run: dotnet test -c Release --no-restore --no-build
+      - run: dotnet test ./framework/Further.Abp.LineNotify/*.sln -c Release --no-restore --no-build
         continue-on-error: false
 
-      - run: dotnet pack -c Release --no-build --property PackageOutputPath=${{ github.workspace }}/nugetPackages/
+      - run: dotnet pack ./framework/Further.Abp.LineNotify/*.sln -c Release --no-build --property PackageOutputPath=${{ github.workspace }}/nugetPackages/
         continue-on-error: false
 
       - run: |
