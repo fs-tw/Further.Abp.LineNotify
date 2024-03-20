@@ -8,7 +8,7 @@ jobs:
   dotnet-publish:
     runs-on: ubuntu-latest
     outputs:
-      outcome: ${{ steps.test.outcome }}
+      outcome: ${{ steps.publish-package.outcome }}
     steps:
       - uses: actions/checkout@v3
       
@@ -65,6 +65,7 @@ jobs:
           ls
 
       - uses: tanaka-takayoshi/nuget-publish-to-github-packages-action@v2.1
+        id: publish-package
         with:
           nupkg-path:  '${{ github.workspace }}/nugetPackages/*.nupkg'
           repo-owner:  'fs-tw'
