@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Further.Abp.LineNotify.DemoApp", "Further.Abp.LineNotify.DemoApp\Further.Abp.LineNotify.DemoApp.csproj", "{64430A23-E2E0-471D-B9F9-31E4E4C834E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "framework", "framework", "{C8B69D94-D805-4CDE-A6AF-2B46173E6A36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Further.Abp.LineNotify", "Further.Abp.LineNotify", "{87B6DCDD-B4C6-44B3-9CD3-5DD524D05C4A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Further.Abp.LineNotify", "..\..\framework\Further.Abp.LineNotify\src\Further.Abp.LineNotify\Further.Abp.LineNotify.csproj", "{17567F75-898C-4EA9-AD7D-B51BC9BA397B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Further.Abp.LineNotify.Abstractions", "..\..\framework\Further.Abp.LineNotify\src\Further.Abp.LineNotify.Abstractions\Further.Abp.LineNotify.Abstractions.csproj", "{8967B9CB-AAFE-456D-A23A-467926F8DDDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64430A23-E2E0-471D-B9F9-31E4E4C834E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64430A23-E2E0-471D-B9F9-31E4E4C834E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64430A23-E2E0-471D-B9F9-31E4E4C834E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64430A23-E2E0-471D-B9F9-31E4E4C834E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17567F75-898C-4EA9-AD7D-B51BC9BA397B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17567F75-898C-4EA9-AD7D-B51BC9BA397B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17567F75-898C-4EA9-AD7D-B51BC9BA397B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17567F75-898C-4EA9-AD7D-B51BC9BA397B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8967B9CB-AAFE-456D-A23A-467926F8DDDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8967B9CB-AAFE-456D-A23A-467926F8DDDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8967B9CB-AAFE-456D-A23A-467926F8DDDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8967B9CB-AAFE-456D-A23A-467926F8DDDA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{87B6DCDD-B4C6-44B3-9CD3-5DD524D05C4A} = {C8B69D94-D805-4CDE-A6AF-2B46173E6A36}
+		{17567F75-898C-4EA9-AD7D-B51BC9BA397B} = {87B6DCDD-B4C6-44B3-9CD3-5DD524D05C4A}
+		{8967B9CB-AAFE-456D-A23A-467926F8DDDA} = {87B6DCDD-B4C6-44B3-9CD3-5DD524D05C4A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {97B31592-9D30-762F-72BA-EC256AA0B76E}
+	EndGlobalSection
+EndGlobal

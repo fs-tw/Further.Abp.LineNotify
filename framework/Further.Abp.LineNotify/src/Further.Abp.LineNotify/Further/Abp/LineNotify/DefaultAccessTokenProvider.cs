@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,11 @@ namespace Further.Abp.LineNotify
 
         public async Task<AccessTokenCacheItem?> GetAccessTokenAsync(string configuratorName, string subject)
         {
+            var key = LineNotifyConsts.AccessTokenCacheName(configuratorName, subject);
 
             var result = await cache.GetAsync(LineNotifyConsts.AccessTokenCacheName(configuratorName, subject));
+
+            await distributedCacheKeyPersist.KeyPersistAsync<AccessTokenCacheItem>(key);
 
             return result;
         }
