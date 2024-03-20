@@ -1,0 +1,3 @@
+[submodule "tools/entitydeveloper"]
+	path = tools/entitydeveloper
+	url = https://github.com/fs-tw/entitydeveloper.git
