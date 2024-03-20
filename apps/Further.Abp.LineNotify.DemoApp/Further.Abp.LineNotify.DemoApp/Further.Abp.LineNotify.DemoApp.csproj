@@ -119,7 +119,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Further.Abp.LineNotify\Further.Abp.LineNotify.csproj" />
+    <ProjectReference Include="..\..\..\framework\Further.Abp.LineNotify\src\Further.Abp.LineNotify\Further.Abp.LineNotify.csproj" />
   </ItemGroup>
 
 </Project>
