@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\..\..\common.props" />
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <RootNamespace></RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="EasyAbp.NotificationService.Domain" Version="2.6.0" />
+        <PackageReference Include="Volo.Abp.Core" Version="8.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EasyAbp.NotificationService.Provider.LineNotify.Abstractions\EasyAbp.NotificationService.Provider.LineNotify.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

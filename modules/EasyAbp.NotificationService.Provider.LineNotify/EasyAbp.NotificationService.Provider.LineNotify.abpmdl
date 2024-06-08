@@ -1,0 +1,10 @@
+{
+  "packages": {
+    "EasyAbp.NotificationService.Provider.LineNotify.Abstractions": {
+      "path": "EasyAbp.NotificationService.Provider.LineNotify.Abstractions/EasyAbp.NotificationService.Provider.LineNotify.Abstractions.abppkg"
+    },
+    "EasyAbp.NotificationService.Provider.LineNotify": {
+      "path": "EasyAbp.NotificationService.Provider.LineNotify/EasyAbp.NotificationService.Provider.LineNotify.abppkg"
+    }
+  }
+}

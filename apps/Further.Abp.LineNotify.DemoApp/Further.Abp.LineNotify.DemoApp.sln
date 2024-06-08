@@ -13,6 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Further.Abp.LineNotify", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Further.Abp.LineNotify.Abstractions", "..\..\framework\Further.Abp.LineNotify\src\Further.Abp.LineNotify.Abstractions\Further.Abp.LineNotify.Abstractions.csproj", "{8967B9CB-AAFE-456D-A23A-467926F8DDDA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{F9D19673-E054-4D3A-A229-11B397EC1390}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyAbp.NotificationService.Provider.LineNotify.Abstractions", "..\..\modules\EasyAbp.NotificationService.Provider.LineNotify\EasyAbp.NotificationService.Provider.LineNotify.Abstractions\EasyAbp.NotificationService.Provider.LineNotify.Abstractions.csproj", "{E3D5790A-EA49-421A-A6FA-E3071B6E275D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyAbp.NotificationService.Provider.LineNotify", "..\..\modules\EasyAbp.NotificationService.Provider.LineNotify\EasyAbp.NotificationService.Provider.LineNotify\EasyAbp.NotificationService.Provider.LineNotify.csproj", "{322EBCB5-7120-4419-8F42-EB806615F584}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EasyAbp.NotificationService.Provider.LineNotify", "EasyAbp.NotificationService.Provider.LineNotify", "{5D54A659-823F-444A-8855-8811549633F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +39,14 @@ Global
 		{8967B9CB-AAFE-456D-A23A-467926F8DDDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8967B9CB-AAFE-456D-A23A-467926F8DDDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8967B9CB-AAFE-456D-A23A-467926F8DDDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3D5790A-EA49-421A-A6FA-E3071B6E275D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3D5790A-EA49-421A-A6FA-E3071B6E275D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3D5790A-EA49-421A-A6FA-E3071B6E275D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3D5790A-EA49-421A-A6FA-E3071B6E275D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{322EBCB5-7120-4419-8F42-EB806615F584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{322EBCB5-7120-4419-8F42-EB806615F584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{322EBCB5-7120-4419-8F42-EB806615F584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{322EBCB5-7120-4419-8F42-EB806615F584}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +55,9 @@ Global
 		{87B6DCDD-B4C6-44B3-9CD3-5DD524D05C4A} = {C8B69D94-D805-4CDE-A6AF-2B46173E6A36}
 		{17567F75-898C-4EA9-AD7D-B51BC9BA397B} = {87B6DCDD-B4C6-44B3-9CD3-5DD524D05C4A}
 		{8967B9CB-AAFE-456D-A23A-467926F8DDDA} = {87B6DCDD-B4C6-44B3-9CD3-5DD524D05C4A}
+		{E3D5790A-EA49-421A-A6FA-E3071B6E275D} = {5D54A659-823F-444A-8855-8811549633F5}
+		{322EBCB5-7120-4419-8F42-EB806615F584} = {5D54A659-823F-444A-8855-8811549633F5}
+		{5D54A659-823F-444A-8855-8811549633F5} = {F9D19673-E054-4D3A-A229-11B397EC1390}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97B31592-9D30-762F-72BA-EC256AA0B76E}
